@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>博客注册</title>
 </head>
 <body>
-
+<form action="{% url  'login' %}"
+      {% csrf_token %}
+用户名：<input type="text" id="username"/><br/>
+密码：<input type="text" id="password"/><br/>
+再次输入密码：<input type="text" id="password2" /><br/>
+邮箱地址：<input type="text" id="email" /><br/>
+<input type="submit" value="提交" />
 </body>
 </html>
