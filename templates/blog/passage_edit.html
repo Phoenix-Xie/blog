@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章修改</title>
+</head>
+<body>
+{% if errormessage %}
+    {{ errormessage }}
+{% endif %}
+<form action="{% url 'blogs:edit_statu' %}" method="post">
+    标题:<input type="text" value="{{ title }}" name="title"/><br/>
+    <input type="text" value="{{ text }}" name="text"/><br/>
+    <input type="submit" value="提交"><br/>
+</form>
+</body>
+</html>

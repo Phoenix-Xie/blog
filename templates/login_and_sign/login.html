@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登入</title>
+</head>
+<body>
+<div id="guo_kai_lu" style="background-image: url(../../login_and_sign/static/login_and_sign/image/lili.jpg)">
+{% if errormessage %}
+    <b>{{ errormessage }}</b>
+{% endif %}
+<form action="{% url 'login_and_sign:home' %}" method="post">
+    {% csrf_token %}
+    欢迎回来，亲爱的用户。<br/>
+    用户名：<input type="text" id="username" name="username" /> <br/>
+    密码：<input type="text" id="password" name="password" /> <br/>
+    <input type="submit" value="确定"/><br/>
+</form>
+<a href="{% url 'login_and_sign:sign' %}">还未注册，点击此处注册</a>
+<div/>
+</body>
+</html>

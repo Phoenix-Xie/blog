@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ username }}的主页</title>
+</head>
+<body>
+{% for title,pub_time,id in passages %}
+    <form action="{% url 'blogs:passage_edit' id %}" method="post">
+    <li>标题：{{ title }}时间：{{ pub_time }} <input type="submit" value="修改"/></li>
+    </form>
+{% endfor %}
+<a href="{% url blogs:home %}">返回主页</a>
+</body>
+</html>

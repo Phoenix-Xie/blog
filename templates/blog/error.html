@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>错误信息页面</title>
+</head>
+<body>
+错误信息如下:
+{% for i in error_message %}
+    <li>{{ i }}</li>
+{% endfor %}
+<a href="{% url 'blogs:home' %}">博客主页</a>
+<a href="{% url 'blogs:self_home' %}">个人主页</a>
+</body>
+</html>
