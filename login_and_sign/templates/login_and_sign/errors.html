@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册情况</title>
+</head>
+<body>
+{{ message }}<br/>
+{% for i in error_list %}
+    <li><label>{{ i }}</label></li>
+{% endfor %}
+ <a href="{% url "login" %}">登入</a>
+<a href="{% url "login_and_sign:sign"%}">重新注册</a>
+</body>
+</html>

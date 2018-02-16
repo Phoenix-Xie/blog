@@ -9,7 +9,7 @@ class Passage(models.Model):
     text = models.CharField(max_length=2000)
     title = models.CharField(max_length=30)
     pub_time = models.DateTimeField()
-    type1 = models.CharField(max_length=50)
-    type2 = models.CharField(max_length=50)
-    type3 = models.CharField(max_length=50)
+    type1 = models.CharField(max_length=50, default='无')
+    type2 = models.CharField(max_length=50, default='无')
+    type3 = models.CharField(max_length=50, default='无')
     #向外关联一个User类进来作为该user的外键，并以username表示

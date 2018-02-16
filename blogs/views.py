@@ -3,34 +3,62 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView
 from blogs.models import Passage
+from login_and_sign.models import User
+import time
 # Create your views here.
 
 
 def home(request):
-    if request.method == 'POST':
-        try:
-            index = request.session.get('index', default=None)
-        except Exception:
-            context = {}
-            context['error_message'] = ['页码获取出错']
-            return render(request, 'blog/error.html', context)
-        #if request.POST.get('')
+    page_item = 5
+    passage_pages = int(Passage.objects.count()/page_item) + 1
+    try:
+        index = request.session.get('index', default=1)
+        print("123")
+    except Exception:
+        context = {}
+        context['error_message'] = ['页码获取出错']
+        return render(request, 'blog/error.html', context)
+    # if request.POST.get('')
     try:
         username = request.session.get('username', default=None)
-
     except Exception:
         context = {}
         context['error_message'] = ['用户名获取出错']
         return render(request, 'blog/error.html', context)
     context = {}
-    if index == None:
-        index = 1;
+    if request.method == 'GET':
+        next_page = request.GET.get('next_page')
+        up_page = request.GET.get('up_page')
+        if not request.GET.get('new_passage') is None:
+            return HttpResponseRedirect(reverse('blogs:add_passage'))
+        if not request.GET.get('exit') is None:
+            context['error_message'] = '注销成功'
+            request.session['username'] = None
+            return render(request, 'login_and_sign/login.html', context)
+        if not request.GET.get('next_page', default=None) is None:
+            index += 1
+        if not request.GET.get('up_page', default=None) is None:
+            index -= 1
+        if index == 0:
+            context['error_message'] = "<script>alert('已经到首页了')</script>"
+            index = 1
+        if index == passage_pages+1:
+            context['error_message'] = '<script>alert("已经到末页了")</script>'
+            index = passage_pages
+
     if username is None:
-        context['errormessage'] = '请先登入'
+        context['error_message'] = '请先登入'
         return render(request, 'login_and_sign/login.html', context)
     context['username'] = username
     context['index'] = index
-    passage_list = Passage.objects.order_by('pub_time')[5*(index-1): 5*index]
+    context['index_all'] = passage_pages
+    print(passage_pages,'   ',index)
+    try:
+        passage_list = Passage.objects.order_by('pub_time')[page_item*(index-1): page_item*index]
+    except:
+        context['error_message'] = '页码错误'
+        return render(request, 'blog/error.html', context)
+    context['passages'] = passage_list
     return render(request, 'blog/home.html', context)
 
 
@@ -91,3 +119,35 @@ def edit_statu(request):
             errormessage.append('标题不能为空')
         context['error_message'] = errormessage
         return render(request, 'blog/edit_statu.html', context)
+
+
+def add_passage(request):
+    return render(request, 'blog/add_passage.html')
+
+
+def add_statu(request):
+    if request.method == 'POST':
+        try:
+            title = request.POST.get('title')
+            text = request.POST.get('passage')
+            type1 = request.POST.get('type1')
+            type2 = request.POST.get('type2')
+            type3 = request.POST.get('type3')
+            username = request.session.get('username')
+            if username is None:
+                context = {'error_message': '请先登录'}
+                return render(request, 'login_and_sign/login.html', context)
+        except:
+            context = {'error_message': '标题和文章获取失败'}
+            return render(request, 'blog/error.html', context)
+        user_id = User.objects.get(username=username).id
+        pub_time = time.strftime("%Y-%m-%d", time.localtime())
+        p = Passage(pub_time=pub_time, username_id=user_id, title=title, text=text, type1=type1, type2=type2, type3=type3)
+        p.save()
+        return render(request, 'blog/home.html')
+    else:
+        context = {'error_message': '请以正常渠道进入，谢谢合作' }
+        return render(request, 'blog/error.html', context)
+
+
+

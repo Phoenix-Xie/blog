@@ -52,7 +52,7 @@ def sign_message(request):
     email = request.POST.get('email')
     error_list = []
     error_counter = 0
-    if User.objects.filter(username=username).count() == 0:
+    if User.objects.filter(username=username).count() != 0:
         error_counter += 1
         error_list.append(str(error_counter) + '.用户名已被注册')
     if password != password2:
@@ -64,7 +64,7 @@ def sign_message(request):
     if re.search(r'[0-9]', password) is None:
         error_counter += 1
         error_list.append(str(error_counter) + '.密码中必须含有数字')
-    if re.search(r'[a-z][A-Z]', password) is None:
+    if (re.search(r'[a-z]+', password) is None) and (re.search(r'[A-Z]+', password) is None):
         error_counter += 1
         error_list.append(str(error_counter) + '.密码中必须含有字母(大小写皆可)')
     # 检测是否与邮箱近似

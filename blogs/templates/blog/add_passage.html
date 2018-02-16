@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<script type="text/javascript" src="{% static "blogs/ckeditor/ckeditor.js" %}"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>新增文章</title>
+</head>
+<body>
+<form action="{% url 'blogs:add_statu' %}" method="post">
+    {% csrf_token %}
+标题：<input type="text" name="title" id="title" /><br/>
+    <input type="text" name="type1" id="type1" value="无">
+    <input type="text" name="type2" id="type2" value="无">
+    <input type="text" name="type3" id="type3" value="无">
+<textarea name="passage"></textarea>
+    <script type="text/javascript" value="在此处书写人生的美好哟~">CKEDITOR.replace('passage');</script>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>
