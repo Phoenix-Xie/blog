@@ -5,6 +5,8 @@
     <title>文章修改</title>
 </head>
 <body>
-{{ message }}
+{{ message }}<br/>
+<a href="{% url 'blogs:home' %}">博客主页</a>
+<a href="{% url 'blogs:self_home' %}">个人主页</a>
 </body>
 </html>

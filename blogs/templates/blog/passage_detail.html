@@ -8,7 +8,9 @@
 文章标题：{{ title }} <br/>
 文章标签：{{ type1 }},{{ type2 }},{{ type3 }}
 文章内容：<br/>
+{% autoescape off %}
 {{ text }}<br/>
+{% endautoescape %}
 发布时间：{{ pub_time }}<br/>
 作者：{{ username }}<br/>
 <a href="{% url 'blogs:home' %}">回到主页</a>

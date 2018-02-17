@@ -5,14 +5,18 @@
     <title>Title</title>
 </head>
 <body>
+{% autoescape off %}
 {% if error_message %}
     {{ error_message }}<br/>
 {% endif %}
-用户：{{ username }}<br/>
+{% endautoescape %}
+用户：{{ username }}
+<a href="{% url 'blogs:self_home' %}">个人主页</a> <br/>
 文章列表：<br/>
-{% for title,passageid,time in passages %}
-    <form action="{% url 'blogs:passage_detail' passage_id  %}" method="post">
-    标题：{{ title }}  发布时间：{{ time }}
+{% for p in passages %}
+    <form action="{% url 'blogs:passage_detail' p.id %}" method="get">
+    标题：{{ p.title }}  发布时间：{{ p.pub_time|date:"Y-m-d" }}
+        {# |data 为过滤器，详见 http://usyiyi.cn/translate/Django_111/ref/templates/builtins.html#ref-templates-builtins-filters #}
     <input type="submit" value="访问该文章" name="datail"/>
     </form>
 {% endfor %}

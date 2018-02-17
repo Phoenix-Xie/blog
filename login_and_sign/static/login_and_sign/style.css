@@ -2,5 +2,5 @@ li a{
     color: green;
 }
 body{
-    background: white url("image/lily.jpg")  right bottom;
+    #background: white url("image/lily.jpg")  right bottom;
 }
