@@ -36,9 +36,7 @@ def home(request):
         if not request.GET.get('new_passage') is None:
             return HttpResponseRedirect(reverse('blogs:add_passage'))
         if not request.GET.get('exit') is None:
-            context['error_message'] = '注销成功'
-            del request.session['username']
-            return render(request, 'login_and_sign/login.html', context)
+            return render(request, 'blog/logout.html')
         if not request.GET.get('next_page', default=None) is None:
             index += 1
         if not request.GET.get('up_page', default=None) is None:

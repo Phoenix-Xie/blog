@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>博客主页</title>
 </head>
 <body>
 {% autoescape off %}
@@ -15,7 +15,7 @@
 <form action="{% url 'blogs:search' %}" method="get">
     在此处输入搜索内容<br/>
     <input type="text" name="search_text" id="search_text"><br/>
-    <input type="submit" value="提交">
+    <input type="submit" value="搜索">
 </form>
 文章列表：<br/>
 {% for p in passages %}
