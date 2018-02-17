@@ -12,6 +12,11 @@
 {% endautoescape %}
 用户：{{ username }}
 <a href="{% url 'blogs:self_home' %}">个人主页</a> <br/>
+<form action="{% url 'blogs:search' %}" method="get">
+    在此处输入搜索内容<br/>
+    <input type="text" name="search_text" id="search_text"><br/>
+    <input type="submit" value="提交">
+</form>
 文章列表：<br/>
 {% for p in passages %}
     <form action="{% url 'blogs:passage_detail' p.id %}" method="get">

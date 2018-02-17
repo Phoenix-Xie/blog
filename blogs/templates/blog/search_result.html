@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章搜索</title>
+</head>
+<body>
+    搜索结果：<br/>
+{% for p in passages %}
+    <form action="{% url 'blogs:passage_detail' p.id %}" method="get">
+    标题：{{ p.title }}  发布时间：{{ p.pub_time|date:"Y-m-d" }}
+        {# |data 为过滤器，详见 http://usyiyi.cn/translate/Django_111/ref/templates/builtins.html#ref-templates-builtins-filters #}
+    <input type="submit" value="访问该文章" name="datail"/>
+    </form>
+{% endfor %}
+</body>
+</html>

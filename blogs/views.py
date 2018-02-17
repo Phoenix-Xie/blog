@@ -131,12 +131,18 @@ def edit_statu(request, passage_id):
             context['error_message'] = ['修改出现错误']
             return render(request, 'blog/error.html', context)
         context = {}
-        errormessage = []
-        if text is None:
-            errormessage.append('文章内容不能为空')
-        if title is None:
-            errormessage.append('标题不能为空')
-        context['error_message'] = errormessage
+        message = []
+        if text is None or text == '':
+            message.append('文章内容不能为空')
+        if title is None or title == '':
+            message.append('标题不能为空')
+        if not message:
+            message.append('成功修改')
+            p = Passage.objects.get(id=passage_id)
+            p.title = title
+            p.text = text
+            p.save()
+        context['message'] = message
         return render(request, 'blog/edit_statu.html', context)
 
 
@@ -179,4 +185,17 @@ def add_statu(request):
         return render(request, 'blog/error.html', context)
 
 
-
+def search(request):
+    if request.method == 'GET':
+        try:
+            search_text = request.GET.get('search_text')
+            search_result = Passage.objects.filter(title__contains=search_text)
+            search_result.order_by('pub_time')
+        except:
+            context = {'error_message': '搜索失败'}
+            return render(request, 'blog/error.html', context)
+        passages = search_result.values('id', 'title', 'pub_time')
+        context = {'passages': passages}
+        return render(request, 'blog/search_result.html', context)
+    context = {'error_message': '请以正常形式登入搜索'}
+    return render(request, 'blog/error.html', context)

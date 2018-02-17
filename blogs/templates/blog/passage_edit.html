@@ -11,11 +11,13 @@
     {{ errormessage }}
 {% endif %}
 <form action="{% url 'blogs:edit_statu' passage_id %}" method="post">
+    {% csrf_token %}
     标题:<input type="text" value="{{ title }}" name="title"/><br/>
-    <textarea name="passage">{{ text|safe }}</textarea>
-    <script type="text/javascript" >CKEDITOR.replace('passage');</script>
-    <input type="submit" value="提交">
+    <textarea name="text" >{{ text|safe }}</textarea>
+    <script type="text/javascript" >CKEDITOR.replace('text');</script><br/>
     <input type="submit" value="提交"><br/>
 </form>
+    <a href="{% url 'blogs:home' %}">博客主页</a>
+<a href="{% url 'blogs:self_home' %}">个人主页</a>
 </body>
 </html>
