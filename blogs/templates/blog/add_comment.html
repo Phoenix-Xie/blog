@@ -15,7 +15,7 @@
 <form action="{% url 'blogs:add_comment_statu' passage_id %}"  method="post">
     {% csrf_token %}
     添加评论:<br/>
-    <textarea name="text" >{{ text }}</textarea>
+    <textarea name="text" autofocus="autofocus" >{{ text }}</textarea>
     <script type="text/javascript">CKEDITOR.replace('text')</script><br/>
     <input type="submit" value="提交"><br/>
 </form>

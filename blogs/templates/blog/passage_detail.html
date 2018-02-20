@@ -19,7 +19,13 @@
 评论区：<br/>
 {% for c in comment %}
     {{ c.text|safe }}<br/>
-    作者:{{ c.username }}发表时间:{{ c.pub_time }}<br/>
+    作者:{{ c.username_id__username }}发表时间:{{ c.pub_time }}<br/>
+    <form action="{% url 'blogs:passage_detail' passage_id %}" method="get">
+    {% if delete %}
+        <input type="hidden" value="{{ c.id }}" name="comment_id"/>
+        <input type="submit" name="delete" value="删除"/>
+    {% endif %}
+    </form>
 {% endfor %}
 <a href="{% url 'blogs:home' %}">回到主页</a>
 </body>

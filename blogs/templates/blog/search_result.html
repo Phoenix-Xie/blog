@@ -13,6 +13,9 @@
     <input type="submit" value="访问该文章" name="datail"/>
     </form>
 {% endfor %}
+ <form action="{% url 'blogs:search' %}" method="get">
+    {% include "base/page_turning.html" with index=index index_all=index_all %}
+</form>
 <a href="{% url 'blogs:home' %}">回到主页</a>
 </body>
 </html>

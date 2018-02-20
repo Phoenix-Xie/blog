@@ -1,6 +1,6 @@
-#global variables
+# 基本常数的设定
 
-the_number_of_items_in_each_page_in_home = 5
+the_number_of_items_in_each_page = 5
 # Passage
 Passage_title_max_length = 30
 Passage_text_max_length = 2000

@@ -11,7 +11,7 @@ class Passage(models.Model):
 
     def __str__(self):
         return self.title
-    username = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者', to_field='username')
+    username_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
     title = models.CharField(max_length=setting.Passage_title_max_length, verbose_name='标题')
     text = models.CharField(max_length=setting.Passage_text_max_length, verbose_name='文章内容')
     pub_time = models.DateTimeField(verbose_name='发表时间')
@@ -28,8 +28,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[0:5]
-    username = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
-    passage = models.ForeignKey(Passage, on_delete=models.CASCADE, verbose_name='所属文章')
+    username_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
+    passage_id = models.ForeignKey(Passage, on_delete=models.CASCADE, verbose_name='所属文章')
     text = models.CharField(max_length=setting.Comment_text_max_length, verbose_name='评论内容')
     pub_time = models.DateTimeField(verbose_name='发表时间')
 

@@ -11,9 +11,13 @@
         标题：{{ p.title }}时间：{{ p.pub_time|date:"Y-m-d" }}
         <input type="submit" value="修改"/>
         <input type="submit" value="删除" name="delete"/>
+        <input type="submit" value="访问该文章" name="visit"/>
     </li>
     </form>
 {% endfor %}
+<form action="{% url 'blogs:self_home' %}" method="get">
+{% include "base/page_turning.html" with index=index index_all=index_all %}
+</form>
 <a href="{% url 'blogs:home' %}">返回主页</a>
 </body>
 </html>

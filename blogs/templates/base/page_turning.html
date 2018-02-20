@@ -1,0 +1,9 @@
+<input type="hidden" value="{{ index }}" name="index"/>
+<input type="submit" value="上一页" name="up_page">
+<input type="submit" value="下一页" name="next_page"> <br/>
+当前所在页数:<input type="text" value="{{ index }}" name="index"/>
+<input type="submit" value="跳转" name="turn"><br/>
+总页数:{{ index_all }}<br/>
+{% if page_error %}
+     <script>alert('{{ page_error }}')</script>
+{% endif %}

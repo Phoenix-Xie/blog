@@ -11,10 +11,16 @@
 {% endif %}
 {% endautoescape %}
 用户：{{ username }}
-<a href="{% url 'blogs:self_home' %}">个人主页</a> <br/>
+<a href="{% url 'blogs:self_home' %}">个人主页</a><br/>
 <form action="{% url 'blogs:search' %}" method="get">
     在此处输入搜索内容<br/>
     <input type="text" name="search_text" id="search_text"><br/>
+    <select name="search_type">
+        <option value="title">标题</option>
+        <option value="text">内容</option>
+        <option value="username">作者</option>
+        <option value="type">类型</option>
+    </select>
     <input type="submit" value="搜索">
 </form>
 文章列表：<br/>
@@ -26,12 +32,9 @@
     </form>
 {% endfor %}
 <form action="{% url 'blogs:home' %}" method="get">
-    <input type="submit" value="上一页" name="up_page">
-    <input type="submit" value="下一页" name="next_page"> <br/>
     <input type="submit" value="新增文章" name="new_passage" > <br/>
     <input type="submit" value="退出" name="exit"><br/>
+    {% include "base/page_turning.html" with index=index index_all=index_all %}
 </form>
-当前所在页数:{{ index }}<br/>
-总页数:{{ index_all }}
 </body>
 </html>
