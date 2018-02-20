@@ -9,8 +9,8 @@
     {% csrf_token %}
 用户名：<input type="text" id="username" name="username" autofocus="on"/><br/>
 密码：<input type="text" id="password" name="password"/><br/>
-再次输入密码：<input type="text" id="password2" name="password2"/><br/>
-邮箱地址：<input type="text" id="email" name="email"/><br/>
+再次输入密码：<input type="password" id="password2" name="password2"/><br/>
+邮箱地址：<input type="password" id="email" name="email"/><br/>
 <input type="submit" value="提交" />
 </form>
 <a href="{% url 'login' %}">返回登入界面</a>

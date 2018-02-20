@@ -1,11 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django import forms
 import re
 from django.http import HttpResponseRedirect
 from .models import User
-import blogs
-from django.contrib import messages
 from django.urls import reverse
+from . import setting
 # Create your views here.
 
 
@@ -52,15 +51,18 @@ def sign_message(request):
     email = request.POST.get('email')
     error_list = []
     error_counter = 0
+    if username == '':
+        error_counter += 1
+        error_list.append(str(error_counter)+'.用户名不能为空')
     if User.objects.filter(username=username).count() != 0:
         error_counter += 1
         error_list.append(str(error_counter) + '.用户名已被注册')
     if password != password2:
         error_counter += 1
         error_list.append(str(error_counter) + '.两次输入密码不符')
-    if len(password) < 5:
+    if len(password) < setting.the_least_lenth_of_password:
         error_counter += 1
-        error_list.append(str(error_counter) + '.密码过短，需要至少5位密码')
+        error_list.append(str(error_counter) + '.密码过短，需要至少'+str(setting.the_least_lenth_of_password)+'位密码')
     if re.search(r'[0-9]', password) is None:
         error_counter += 1
         error_list.append(str(error_counter) + '.密码中必须含有数字')
@@ -76,13 +78,3 @@ def sign_message(request):
         user = User(username=username, password=password, email=email)
         user.save()
         return render(request, 'login_and_sign/errors.html', context)
-
-    '''if request.method == 'POST':
-        print("second")
-        form = UserForm(request.POST)
-        if form.is_valid():
-            user = models.User()
-            user.username = form.cleaned_data["username"]
-            user.password = form.cleaned_data["password"]
-            user.email = form.cleaned_data["email"]
-            user.save()''' #使用form类型，未知是否可行

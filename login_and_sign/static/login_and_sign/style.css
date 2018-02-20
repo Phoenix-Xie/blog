@@ -1,6 +1,7 @@
 li a{
-    color: green;
+    color: #26801c;
 }
 body{
     #background: white url("image/lily.jpg")  right bottom;
+    #background: white url("image/TuLongBaoDao.png")  left top;
 }

@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^(?P<passage_id>[0-9]+)/edit/statu$', views.edit_statu, name='edit_statu'),
     url(r'^add/$', views.add_passage, name='add_passage'),
     url(r'^add/statu/$', views.add_statu, name='add_statu'),
+    url(r'^(?P<passage_id>[0-9]+)/comment/$', views.add_comment, name='add_comment'),
+    url(r'^(?P<passage_id>[0-9]+)/comment/statu$', views.add_comment_statu, name='add_comment_statu'),
 ]

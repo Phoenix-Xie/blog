@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登入</title>
+    <title>登入-blog</title>
 </head>
 <body>
 {% if error_message %}
@@ -14,9 +14,9 @@
     {% csrf_token %}
     欢迎回来，亲爱的用户。<br/>
     用户名：<input type="text" id="username" name="username" /> <br/>
-    密码：<input type="text" id="password" name="password" /> <br/>
+    密码：<input type="password" id="password" name="password" /> <br/>
     <input type="submit" value="确定"/><br/>
 </form>
-<a href="{% url 'login_and_sign:sign' %}">还未注册，点击此处注册</a>
+<a href="{% url 'login_and_sign:sign' %}">还未注册，点击此处注册(点击就送屠龙宝刀)</a>
 </body>
 </html>

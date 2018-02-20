@@ -13,6 +13,14 @@
 {% endautoescape %}
 发布时间：{{ pub_time }}<br/>
 作者：{{ username }}<br/>
+<form action="{% url 'blogs:add_comment' passage_id %}" method="get">
+    <input type="submit" name="visit" value="新增评论">
+</form>
+评论区：<br/>
+{% for c in comment %}
+    {{ c.text|safe }}<br/>
+    作者:{{ c.username }}发表时间:{{ c.pub_time }}<br/>
+{% endfor %}
 <a href="{% url 'blogs:home' %}">回到主页</a>
 </body>
 </html>

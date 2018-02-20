@@ -2,14 +2,16 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView
-from blogs.models import Passage
+from blogs.models import Passage, Comment
 from login_and_sign.models import User
+from . import setting
+from .function import passage_test
 import time
 # Create your views here.
 
 
 def home(request):
-    page_item = 5
+    page_item = setting.the_number_of_items_in_each_page_in_home
     passage_pages = int(Passage.objects.count()/page_item) + 1
     try:
         index = request.session.get('index', default=1)
@@ -66,6 +68,7 @@ def home(request):
 
 def passage_detail(request, passage_id):
     p = Passage.objects.get(id=passage_id)
+    c = Comment.objects.filter(passage_id=passage_id).values('id', 'text', 'username', 'pub_time')
     context = {'title': p.title,
                'text': p.text,
                'pub_time': p.pub_time,
@@ -73,6 +76,8 @@ def passage_detail(request, passage_id):
                'type1': p.type1,
                'type2': p.type2,
                'type3': p.type3,
+               'passage_id': passage_id,
+               'comment': c,
                }
     return render(request, 'blog/passage_detail.html', context)
 
@@ -109,7 +114,7 @@ def passage_edit(request, passage_id):
             context = {}
             context['error_message'] = ['文章删除失败']
             return render(request, 'blog/error.html', context)
-        context = {'message': '删除成功'}
+        context = {'error_message': ['删除成功', ]}
         return render(request, 'blog/edit_statu.html', context)
     context = {}
     context['text'] = p.text
@@ -129,18 +134,14 @@ def edit_statu(request, passage_id):
             context['error_message'] = ['修改出现错误']
             return render(request, 'blog/error.html', context)
         context = {}
-        message = []
-        if text is None or text == '':
-            message.append('文章内容不能为空')
-        if title is None or title == '':
-            message.append('标题不能为空')
-        if not message:
-            message.append('成功修改')
-            p = Passage.objects.get(id=passage_id)
-            p.title = title
-            p.text = text
-            p.save()
-        context['message'] = message
+        context = passage_test(title=title, text=text)
+        if context['error_message'] != []:
+            return render(request, 'blog/edit_statu.html', context)
+        p = Passage.objects.get(id=passage_id)
+        p.title = title
+        p.text = text
+        p.save()
+        context['error_message'] = ['修改成功', ]
         return render(request, 'blog/edit_statu.html', context)
 
 
@@ -164,14 +165,8 @@ def add_statu(request):
             context = {'error_message': '标题和文章获取失败'}
             return render(request, 'blog/error.html', context)
         error_count = 0
-        context = {'error_message': []}
-        if title == '':
-            error_count += 1
-            context['error_message'].append('标题不能为空')
-        if text == '':
-            error_count += 1
-            context['error_message'].append('内容不能为空')
-        if error_count != 0:
+        context = passage_test(title, text, type1, type2, type3)
+        if context['error_message'] != []:
             return render(request, 'blog/add_passage.html', context)
         user_id = User.objects.get(username=username).id
         pub_time = time.strftime("%Y-%m-%d", time.localtime())
@@ -197,3 +192,43 @@ def search(request):
         return render(request, 'blog/search_result.html', context)
     context = {'error_message': '请以正常形式登入搜索'}
     return render(request, 'blog/error.html', context)
+
+
+def add_comment(request, passage_id):
+    context = {'passage_id': passage_id}
+    return render(request, 'blog/add_comment.html', context)
+
+
+def add_comment_statu(request, passage_id):
+    if request.method == 'POST':
+        try:
+            text = request.POST.get('text')
+        except:
+            context = {'error_message': '评论发送失败'}
+            return render(request, 'blog/error.html', context)
+        try:
+            username = request.session.get('username')
+            username_id = User.objects.get(username=username).id
+        except:
+            context = {'error_message': '请先登入'}
+            return render(request, 'login_and_sign/login.html', context)
+        if text == '':
+            context = {'error_message': '文章内容不能为空', 'text':text}
+            return render(request, 'blog/add_comment.html', context)
+        if len(text) > setting.Comment_text_max_length:
+            context = {'error_message': '文章内容不能超过'+str(setting.Comment_text_max_length), 'text':text}
+            return render(request, 'blog/add_comment.html', context)
+        comment = Comment(text=text,
+                          username_id=username_id,
+                          pub_time=time.strftime("%Y-%m-%d", time.localtime()),
+                          passage_id=passage_id,
+                          )
+        comment.save()
+        return HttpResponseRedirect(reverse('blogs:passage_detail', args=(passage_id,)))
+
+
+
+
+
+
+
