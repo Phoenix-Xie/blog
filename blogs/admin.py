@@ -1,7 +1,7 @@
 # Register your models here.
 from django.contrib import admin
 
-from .models import Passage
+from .models import Passage, Comment
 
 admin.DateFieldListFilter.title = '按出版时间'
 # admin.DateFieldListFilter
@@ -12,3 +12,4 @@ class PassageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Passage, PassageAdmin)
+admin.site.register(Comment)

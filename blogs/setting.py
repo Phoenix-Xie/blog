@@ -1,5 +1,5 @@
 # 基本常数的设定
-
+from login_and_sign.setting import *
 the_number_of_items_in_each_page = 5
 # Passage
 Passage_title_max_length = 30

@@ -128,3 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)

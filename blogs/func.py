@@ -1,10 +1,16 @@
 from . import setting
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import Passage
 
 
 def passage_test(title='1', text='1', type1='', type2='', type3=''):
-    context = {'error_message': []}
+    context = {
+                'error_message': [],
+               'title': title,
+               'text': text,
+               'type1': type1,
+               'type2': type2,
+               'type3': type3,
+               }
     if title == '' or title is None:
         context['error_message'].append('标题不能为空')
     if len(title) > setting.Passage_title_max_length:
@@ -32,12 +38,15 @@ def test_login(request):
 
 
 # 返回相应的文章列表，页码, 总页数
-def passage_list(request, p_object, page_items=setting.the_number_of_items_in_each_page):
-    p = Paginator(p_object, page_items)
+def objects_list(request, p_objects, page_items=setting.the_number_of_items_in_each_page):
+    p = Paginator(p_objects, page_items)
     index = page_turning(request)
     context = {}
     try:
         context['passages'] = p.page(index)
+    except PageNotAnInteger:
+        index = 1
+        context['passages'] = p.page(1)
     except EmptyPage:
         if index <= 0:
             index = 1
@@ -69,3 +78,5 @@ def page_turning(request):
         if not request.GET.get('up_page', default=None) is None:
             index -= 1
     return index
+
+

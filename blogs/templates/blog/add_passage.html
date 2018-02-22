@@ -15,9 +15,9 @@
 <form action="{% url 'blogs:add_statu' %}" method="post">
     {% csrf_token %}
 标题：<input type="text" name="title" id="title" /><br/>
-    标签1：<input type="text" name="type1" id="type1" value="无">
-    标签2：<input type="text" name="type2" id="type2" value="无">
-    标签3：<input type="text" name="type3" id="type3" value="无">
+    标签1：<input type="text" name="type1" id="type1" value="{{ type1 }}">
+    标签2：<input type="text" name="type2" id="type2" value="{{ type2 }}">
+    标签3：<input type="text" name="type3" id="type3" value="{{ type3 }}">
 <textarea name="passage" >{{ text }}</textarea>
     <script type="text/javascript" >CKEDITOR.replace('passage');</script>
     <input type="submit" value="提交"><br/>

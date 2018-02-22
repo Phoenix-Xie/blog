@@ -34,6 +34,7 @@
 <form action="{% url 'blogs:home' %}" method="get">
     <input type="submit" value="新增文章" name="new_passage" > <br/>
     <input type="submit" value="退出" name="exit"><br/>
+    <input type="submit" value="修改密码" name="change_password">
     {% include "base/page_turning.html" with index=index index_all=index_all %}
 </form>
 </body>

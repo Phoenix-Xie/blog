@@ -5,12 +5,19 @@
     <title>博客注册</title>
 </head>
 <body>
+{% if message %}
+{{ message }}<br/>
+{% for i in error_list %}
+    <li><label>{{ i }}</label></li>
+{% endfor %}
+{% endif %}
 <form action="{% url  'login_and_sign:message' %}" method="post">
     {% csrf_token %}
-用户名：<input type="text" id="username" name="username" autofocus="on"/><br/>
+用户名：<input type="text" id="username" name="username" value="{{ username }}" autofocus="on"/><br/>
 密码：<input type="password" id="password" name="password"/><br/>
 再次输入密码：<input type="password" id="password2" name="password2"/><br/>
-邮箱地址：<input type="text" id="email" name="email"/><br/>
+邮箱地址：<input type="text" id="email" value="{{ email }}" name="email"/><br/>
+    {% include 'base/code.html' %}
 <input type="submit" value="提交" />
 </form>
 <a href="{% url 'login' %}">返回登入界面</a>
