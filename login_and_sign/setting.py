@@ -9,3 +9,7 @@ the_email_can_be_use = [
     'qq.com',
     '163.com',
 ]
+chars_for_reset_password = 'abcdefghijklmnopqrstubwswzABCDEFGHIJKLMNOPQRSTUBWSWZ0123456789'
+the_length_of_reset_password = 6
+the_name_of_sender ='easyblog <easyblog123@163.com'
+base_website_location_for_reset_password = 'http://127.0.0.1:8000/login_and_sign/'

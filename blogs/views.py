@@ -145,6 +145,11 @@ def add_statu(request):
         error_count = 0
         context = func.passage_test(title, text, type1, type2, type3)
         if context['error_message'] != []:
+            context['title'] = title
+            context['text'] = text
+            context['type1'] = type1
+            context['type2'] = type2
+            context['type3'] = type3
             return render(request, 'blog/add_passage.html', context)
         user = User.objects.get(username=username)
         pub_time = time.strftime("%Y-%m-%d", time.localtime())

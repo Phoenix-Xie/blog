@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django import forms
 import re
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from io import BytesIO
 from .models import User
 from django.urls import reverse
-from . import setting
-from . import func
+from . import setting, func
+import random
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -24,6 +25,23 @@ def login(request):
 
 def home(request):
     if request.method == 'POST':
+        if not request.POST.get('forget') is None:
+            username = request.POST.get('username')
+            try:
+                user = User.objects.get(username=username)
+            except:
+                context = {'error_message': '请填入正确用户名后找回密码', 'username': username}
+                return render(request, "login_and_sign/login.html", context)
+            reset_password = ''.join(random.sample(setting.chars_for_reset_password, setting.the_length_of_reset_password))
+            reset_password_deal = make_password(reset_password)
+            net = setting.base_website_location_for_reset_password+reset_password_deal+'/verify?username='+username+'&reset_password='+reset_password
+            message = net + '    访问该网址完成密码重置'
+            send_mail('重置密码', message, 'easyblog <easyblog123@163.com>', [user.email, ], fail_silently=False)
+            context = {
+                'message': '验证已发送至邮箱,请登入邮箱验证',
+                'title': '重置密码',
+            }
+            return render(request, 'login_and_sign/errors.html', context)
         username = request.POST.get('username')
         password = request.POST.get('password')
         if not func.check_code(request):
@@ -109,6 +127,7 @@ def sign_message(request):
                    "message": "注册失败,错误信息如下",
                    'username': username,
                    'email': email,
+                   'title': '注册情况',
                    }
         return render(request, 'login_and_sign/sign.html', context)
     else:
@@ -127,3 +146,29 @@ def create_code_img(request):
     img.save(f, 'PNG')
     return HttpResponse(f.getvalue())
 
+
+def verify(request, password_verify):
+    try:
+        reset_password = request.GET.get('reset_password')
+        username = request.GET.get('username')
+        user = User.objects.get(username=username)
+    except:
+        context = {
+            'message': '密码重置失败',
+            'title': '重置密码',
+        }
+        return render(request, 'login_and_sign/errors.html', context)
+    if check_password(reset_password, password_verify):
+        user.password = make_password(reset_password)
+        user.save()
+        context = {
+            'message': '密码重置成功, 密码重置为 '+reset_password+',请小心保管',
+            'title': '重置密码',
+        }
+        return render(request, 'login_and_sign/errors.html', context)
+    else:
+        context = {
+            'message': '密码重置失败',
+            'title': '重置密码',
+        }
+        return render(request, 'login_and_sign/errors.html', context)

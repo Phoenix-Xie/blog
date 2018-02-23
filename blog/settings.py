@@ -132,3 +132,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'  # 如果是 163 改成 smtp.163.com
+EMAIL_PORT = 25  # 作用未知
+EMAIL_HOST_USER = 'easyblog123@163.com'  # 帐号
+EMAIL_HOST_PASSWORD = '110abc'  # 密码
+DEFAULT_FROM_EMAIL = 'easyblog <easyblog123@163.com>'

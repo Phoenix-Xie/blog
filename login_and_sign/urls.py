@@ -6,4 +6,5 @@ urlpatterns = [
     url(r'^sign$', views.sign, name='sign'),
     url(r'^message$', views.sign_message, name='message'),
     url(r'^home$', views.home, name='home'),
+    url(r'^(?P<password_verify>.+)/verify$', views.verify, name='verify')
 ]
